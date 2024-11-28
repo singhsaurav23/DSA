@@ -1,7 +1,15 @@
-// either select song or take same song so numbe rof ways will be n* n-1 * n-2 ....
+﻿// either select song or take same song so numbe rof ways will be n* n-1 * n-2 ....
 // dp state will number of songs played and number of songs selected so that we can find ways by remaining songs..and last k osngs should n't be there if same song playe again
 // undertsand the state and ways and logical intutuion to use subprobelem to find witn two ways ether select same or take another
+//logic- >
 
+/*
+* For the very first song in the playlist, you have i choices because you have i unique songs. So, you pick one song out of i possibilities.
+For the second song, since it cannot be the same as the first one, you have i−1 choices. You've already played one song, and you can't repeat it yet, so you have one fewer choice.
+You keep picking new songs for the first k songs in the playlist. For the third song, you have i−2 choices, for the fourth one i−3 choices, and so on, until the k-th song, for which you have i−(k−1) choices.
+Now, for the (k+1)-th song and onwards, the only banned songs are k last played songs. Thus, each of the remaining goal−k songs has i−k possible choices.
+This leads us to the formula for f(i): f(i)=i⋅(i−1)⋅(i−2)⋅⋯⋅(i−k+1)⋅(i−k)**(goal−k)
+*/
 class Solution {
 public:
     long mod = 1e9 + 7;
