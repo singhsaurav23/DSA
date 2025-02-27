@@ -54,3 +54,71 @@ public:
     }
 
 };
+
+//2nd question was to minimum artculation point such that left top is not reachable to bottom right atmost 2 answer minimum one cell to find if there any
+
+#include<bits/stdc++.h>
+using namespace std;
+#define ll long long
+
+ll dx[4] = { 0,0,1,-1 };
+ll dy[4] = { 1,-1,0,0 };
+
+bool issafe(int i, int j, vector<vector<ll>>& v) {
+    if (i < 0 || j < 0 || i >= v.size() || j >= v[0].size() || v[i][j] == 0) return false;
+    return true;
+}
+
+int c = 1;
+
+void dfs(ll i, ll j, int ii, int jj, vector<vector<ll>>& v, vector<vector<ll>>& tin, vector<vector<ll>>& low) {
+    // if(i==3&&j==1) cout<<v[i][j]<<" ";
+    v[i][j] = 2;
+
+    tin[i][j] = c++;
+    low[i][j] = c++;
+    //cout<<i<<" "<<j<<"\n";
+    for (ll m = 0; m < 4; m++) {
+        ll x = i + dx[m];
+        ll y = j + dy[m];
+        if (x == 0 && y == 0) continue;
+        if (x == v.size() - 1 && y == v[0].size() - 1) continue;
+        if (x == ii && y == jj) continue;
+        //if(v[x][y]==0) continue;
+        if (issafe(x, y, v)) {
+            if (v[x][y] == 2) {
+                low[i][j] = min(low[i][j], tin[x][y]);
+            }
+            else {
+
+                dfs(x, y, i, j, v, tin, low);
+                low[i][j] = min(low[i][j], low[x][y]);
+                if (low[x][y] >= tin[i][j] && ii != -1 && jj != -1) cout << i << " " << j << "\n";
+
+            }
+        }
+    }
+}
+
+int main() {
+    ll t;
+    cin >> t;
+    while (t--) {
+        ll i, j, n, m;
+        cin >> n >> m;
+
+        vector<vector<ll>> v(n, vector<ll>(m));
+        vector<vector<ll>> tin(n, vector<ll>(m, -1));
+        vector<vector<ll>> low(n, vector<ll>(m, -1));
+        vector<ll> suf(n, 0);
+        for (i = 0; i < n; i++) {
+            for (j = 0; j < m; j++) {
+                cin >> v[i][j];
+            }
+        }
+        //articulation points
+        dfs(0, 0, -1, -1, v, tin, low);
+
+    }
+    return 0;
+}
